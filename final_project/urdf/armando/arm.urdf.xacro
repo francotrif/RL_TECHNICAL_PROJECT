@@ -1,0 +1,596 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="armando">
+  
+  <!-- Argomenti che verranno passati dal launch file -->
+  <xacro:arg name="namespace" default=""/>
+  <xacro:arg name="yaml_file" default=""/>
+  <xacro:arg name="mesh_dir" default=""/>
+  
+  <!-- Proprietà locali -->
+  <xacro:property name="prefix" value="arm_"/>
+  <xacro:property name="namespace_value" value="$(arg namespace)"/>
+  <xacro:property name="yaml_path" value="$(arg yaml_file)"/>
+  <xacro:property name="mesh_directory" value="$(arg mesh_dir)"/>
+  
+  
+  <material name="red">
+    <color rgba="1 0 0 1"/>
+  </material>
+
+  <material name="blue">
+    <color rgba="0 0 1 1"/>
+  </material>
+  
+  <material name="green">
+    <color rgba="0 1 0 1"/>
+  </material>
+
+
+
+  <link name="${prefix}base_link">
+    <visual>
+      <geometry>
+        <mesh filename="${mesh_directory}/base_link.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0.03"/>
+      <material name="red"/>
+    </visual>
+    <collision>
+      <geometry>
+        <!--<mesh filename="${mesh_directory}/base_link.stl" scale="0.001 0.001 0.001"/>-->
+        <box size = "0.08 0.08 0.1"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0.03"/>
+    </collision>
+    <inertial>
+      <mass value="0.1"/>
+      <inertia ixx="1.06682889e+08" ixy="0.0" ixz="0.0" iyy="9.92165844e+07" iyz="0.0" izz="1.26939175e+08"/>
+    </inertial>    
+  </link>
+
+  <joint name="${prefix}base_1_2" type="fixed">
+    <parent link="${prefix}base_link"/>
+    <child link="${prefix}base_turn"/>
+    <origin xyz="-0.0011 -0.011 0.08"/>
+  </joint>
+
+  <link name="${prefix}base_turn">
+    <visual>
+      <geometry>
+        <mesh filename="${mesh_directory}/base_turn.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <material name="red"/>
+    </visual>
+    <collision>
+      <geometry>
+          <!--<mesh filename="${mesh_directory}/base_turn.stl" scale="0.001 0.001 0.001"/>-->
+          <box size = "0.05 0.08 0.008"/>
+        </geometry>
+      <origin rpy="0 0 0" xyz="0 +0.011 0"/>
+    </collision>   
+    <inertial>
+      <mass value="0.1"/>
+      <inertia ixx="1.35223008e+07" ixy="0.0" ixz="0.0" iyy="8.13814925e+06" iyz="0.0" izz="2.14903814e+07"/>
+    </inertial>
+  </link>
+ 
+  <joint name="${prefix}j0" type="revolute">
+    <parent link="${prefix}base_turn"/>
+    <child link="${prefix}base_turn_rot"/>
+    <origin xyz="-0.0 0.0155 0.013" rpy = "0 0 -1.57"/>
+    <axis xyz="0 0 1" />
+    <limit effort="300" velocity="1.1" lower="-2.57" upper="2.57"/> <!--< velocity di default 0.1 >-->
+  </joint>
+
+  <link name="${prefix}base_turn_rot">
+    <visual>
+      <geometry>
+        <mesh filename="${mesh_directory}/base_turn_table_rot.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="red"/>
+    </visual>
+    <collision>
+      <geometry>
+          <!--<mesh filename="${mesh_directory}/base_turn_table_rot.stl" scale="0.001 0.001 0.001"/>-->
+          <box size = "0.055 0.055 0.02"/>
+        </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+    </collision>
+    
+    <inertial>
+      <mass value="0.1"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+    </inertial>
+  </link>
+  
+  <joint name="${prefix}base_turn_rot_dyn2" type="fixed">
+    <parent link="${prefix}base_turn_rot"/>
+    <child link="${prefix}dyn2"/>
+    <origin xyz="0 0 0.0385" rpy="0 1.57 1.57 "/>
+  </joint>
+
+  <link name="${prefix}dyn2">
+    <visual>
+      <geometry>
+        <mesh filename="${mesh_directory}/dyn.stl" scale="0.01 0.01 0.01"/>
+      </geometry>
+      <material name="blue"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+    </visual>
+    <collision>
+      <geometry>
+          <!--<mesh filename="${mesh_directory}/dyn.stl" scale="0.01 0.01 0.01"/>-->
+          <box size = "0.05 0.031 0.035"/>
+        </geometry>
+      <origin rpy="0 0 0" xyz="0.01 0 0"/>
+    </collision>
+     <inertial>
+      <mass value="0.1"/>
+      <inertia ixx="6.90013881e-05" ixy="0.0" ixz="0.0" iyy="1.24554875e-04" iyz="0.0" izz="1.04295793e-04"/>
+    </inertial>
+  </link>
+  
+  <joint name="${prefix}j1" type="revolute">
+    <parent link="${prefix}dyn2"/>
+    <child link="${prefix}dyn2_r"/>
+    <origin xyz="0 0 0.0" rpy="0 0 0"/>
+    <axis xyz="0 0 1" />
+    <limit effort="300" velocity="1.1" lower="-3.14" upper="3.14"/> <!--< velocity di default 0.1 >-->
+  </joint>
+  
+  <link name="${prefix}dyn2_r">
+    
+  </link>
+
+  <joint name="${prefix}dyn2_f4" type="fixed">
+    <parent link="${prefix}dyn2_r"/>
+    <child link="${prefix}f4"/>
+    <origin xyz="-0.047 0.0 -0.003" rpy="0 1.57 1.57"/>
+  </joint>
+
+  <link name="${prefix}f4">
+    <visual>
+      <geometry>
+        <mesh filename="${mesh_directory}/f4_n_f3.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <material name="red"/>
+    </visual>
+    <collision>
+      <geometry>
+          <!--<mesh filename="${mesh_directory}/f4_n_f3.stl" scale="0.001 0.001 0.001"/>-->
+          <box size = "0.06 0.088 0.027"/>
+        </geometry>
+      <origin rpy="0 0 0" xyz="0 -0.01 0"/>
+    </collision>
+     <inertial>
+      <mass value="0.1"/>
+      <inertia ixx="6.90013881e-05" ixy="0.0" ixz="0.0" iyy="1.24554875e-04" iyz="0.0" izz="1.04295793e-04"/>
+    </inertial>
+  </link>
+  
+  <joint name="${prefix}d4_dyn3" type="fixed">
+    <parent link="${prefix}f4"/>
+    <child link="${prefix}dyn3"/>
+    <origin xyz="-0.004 0.0645 0 " rpy="-1.57 3.14 1.57"/>
+  </joint>
+  
+  <link name="${prefix}dyn3">
+    <visual>
+      <geometry>
+        <mesh filename="${mesh_directory}/dyn.stl" scale="0.01 0.01 0.01"/>
+      </geometry>
+      <material name="blue"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+    </visual>
+    <collision>
+      <geometry>
+          <!--<mesh filename="${mesh_directory}/dyn.stl" scale="0.01 0.01 0.01"/>-->
+          <box size = "0.05 0.027 0.04"/>
+        </geometry>
+      <origin rpy="0 0 0" xyz="0.01 0 0"/>
+    </collision>
+     <inertial>
+      <mass value="0.1"/>
+      <inertia ixx="6.90013881e-05" ixy="0.0" ixz="0.0" iyy="1.24554875e-04" iyz="0.0" izz="1.04295793e-04"/>
+    </inertial>
+  </link>
+  
+  <joint name="${prefix}j2" type="revolute">
+    <parent link="${prefix}dyn3"/>
+    <child link="${prefix}dyn3_r"/>
+    <origin xyz="0 0 0.0" rpy="0 0 0"/>
+    <axis xyz="0 0 1" />
+    <limit effort="300" velocity="1.1" lower="-3.14" upper="3.14"/> <!--< velocity di default 0.1 >-->
+  </joint>
+  
+ <link name="${prefix}dyn3_r">
+
+  </link>
+  
+  <joint name="${prefix}dyn3_f5" type="fixed">
+    <parent link="${prefix}dyn3_r"/>
+    <child link="${prefix}f5"/>
+    <origin xyz="-0.046 -0.0 -0.002" rpy="1.57 1.57 3.1415 "/>
+  </joint>
+
+  <link name="${prefix}f5">
+    <visual>
+      <geometry>
+        <mesh filename="${mesh_directory}/f4_n_f3.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <material name="red"/>
+    </visual>
+    <collision>
+      <geometry>
+          <!--<mesh filename="${mesh_directory}/f4_n_f3.stl" scale="0.001 0.001 0.001"/>-->
+          <box size = "0.065 0.088 0.027"/>
+        </geometry>
+      <origin rpy="0 0 0" xyz="-0.005 -0.01 0"/>
+    </collision>
+    
+    <inertial>
+      <mass value="0.1"/>
+  <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>    </inertial>
+  </link>
+  
+  <joint name="${prefix}f5_dyn4" type="fixed">
+    <parent link="${prefix}f5"/>
+    <child link="${prefix}dyn4"/>
+    <origin xyz="-0.004 0.065 -0.0" rpy="-1.57 3.1415 1.57 "/>
+  </joint> 
+  
+  <link name="${prefix}dyn4">
+    <visual>
+      <geometry>
+        <mesh filename="${mesh_directory}/dyn.stl" scale="0.01 0.01 0.01"/>
+      </geometry>
+      <material name="blue"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+    </visual>
+    <collision>
+      <geometry>
+          <!--<mesh filename="${mesh_directory}/dyn.stl" scale="0.01 0.01 0.01"/>-->
+          <box size = "0.05 0.029 0.037"/>
+        </geometry>
+      <origin rpy="0 0 0" xyz="0.01 0 0"/>
+    </collision>
+    
+    <inertial>
+      <mass value="0.1"/>
+      <inertia ixx="6.90013881e-05" ixy="0.0" ixz="0.0" iyy="1.24554875e-04" iyz="0.0" izz="1.04295793e-04"/>
+    </inertial>
+  </link>
+  
+  <joint name="${prefix}j3" type="revolute">
+    <parent link="${prefix}dyn4"/>
+    <child link="${prefix}dyn4_r"/>
+    <origin xyz="0 0 0.0" rpy="0 0 0"/>
+    <axis xyz="0 0 1" />
+    <limit effort="300" velocity="1.1" lower="-3.14" upper="3.14"/> <!--< velocity di default 0.1 >-->
+  </joint>
+  
+  <link name="${prefix}dyn4_r">
+    
+  </link>
+  
+  <joint name="${prefix}f5_wrist" type="fixed">
+    <parent link="${prefix}dyn4_r"/>
+    <child link="${prefix}wrist"/>
+    <origin xyz="-0.017 -0.013 0.003" rpy="1.57 1.57 -1.57"/>
+  </joint>
+
+  <link name="${prefix}wrist">
+    <visual>
+      <geometry>
+        <mesh filename="${mesh_directory}/wrist.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <material name="red"/>
+    </visual>
+    <collision>
+      <geometry>
+        <!--<mesh filename="${mesh_directory}/wrist.stl" scale="0.001 0.001 0.001"/>-->
+        <box size = "0.057 0.046 0.045"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 -0.01"/>
+    </collision>
+    
+     <inertial>
+      <mass value="0.1"/>
+      <inertia ixx="6.90013881e-05" ixy="0.0" ixz="0.0" iyy="1.24554875e-04" iyz="0.0" izz="1.04295793e-04"/>
+    </inertial>
+  </link>
+  
+  <joint name="${prefix}wrist_dyn5" type="fixed">
+    <parent link="${prefix}wrist"/>
+    <child link="${prefix}dyn5"/>
+    <origin xyz="0.0038 -0.013 0.0275" rpy="0 0 1.57"/>
+  </joint>
+
+    <link name="${prefix}dyn5">
+    <visual>
+      <geometry>
+        <mesh filename="${mesh_directory}/dyn.stl" scale="0.01 0.01 0.01"/>
+      </geometry>
+      <material name="blue"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+    </visual>
+    <collision>
+      <geometry>
+          <!--<mesh filename="${mesh_directory}/dyn.stl" scale="0.01 0.01 0.01"/>-->
+          <box size = "0.05 0.031 0.04"/>
+        </geometry>
+      <origin rpy="0 0 0" xyz="0.01 0 0"/>
+    </collision>
+    
+    <inertial>
+      <mass value="0.1"/>
+      <inertia ixx="6.90013881e-05" ixy="0.0" ixz="0.0" iyy="1.24554875e-04" iyz="0.0" izz="1.04295793e-04"/>
+    </inertial>
+  </link>
+ 
+  <joint name="${prefix}dyn5_dyn5_r" type="fixed">
+    <parent link="${prefix}dyn5"/>
+    <child link="${prefix}dyn5_r"/>
+    <origin xyz="0 0 0.0" rpy="0 0 0"/>
+    <axis xyz="0 0 1" />
+    <limit effort="300" velocity="1.1" lower="-3.14" upper="3.14"/> <!--< velocity di default 0.1 >-->
+  </joint>
+  
+  <link name="${prefix}dyn5_r">
+    
+  </link>
+  
+  <joint name="${prefix}wrist_rotate_dyn5" type="fixed">
+    <parent link="${prefix}dyn5_r"/>
+    <child link="${prefix}crawer_base"/>
+    <origin xyz="0.015 0 0.019" rpy="0 0 1.57"/>
+  </joint>
+    
+  <link name="${prefix}crawer_base">
+    <visual>
+      <geometry>
+        <mesh filename="${mesh_directory}/the_crawer_base.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <material name="red"/>
+    </visual>
+    <collision>
+      <geometry>
+          <!--<mesh filename="${mesh_directory}/the_crawer_base.stl" scale="0.001 0.001 0.001"/>-->
+          <box size = "0.102 0.052 0.007"/>
+        </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+    </collision>
+    
+    <inertial>
+      <mass value="0.1"/>
+      <inertia ixx="6.90013881e-05" ixy="0.0" ixz="0.0" iyy="1.24554875e-04" iyz="0.0" izz="1.04295793e-04"/>
+    </inertial>
+  </link>
+    
+
+
+  <!-- Joint prismatico per la pinza sinistra -->
+  <joint name="${prefix}gripper_left_joint" type="prismatic">
+    <parent link="${prefix}crawer_base"/>
+    <child link="${prefix}crawer_left"/>
+    <origin xyz="-0.03 0.015 0.01" rpy="0 -1.57 0"/>
+    <axis xyz="0 0 1"/>  <!-- Si muove lungo l'asse X -->
+    <limit effort="20" velocity="0.1" lower="0.0" upper="0.03"/>  <!-- 3cm di apertura; velocity di default 0.05 -->
+  </joint>
+  
+  <link name="${prefix}crawer_left">
+    <visual>
+      <geometry>
+        <mesh filename="${mesh_directory}/the_crawer.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <material name="white">
+        <color rgba="1 1 1 1"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+          <!--<mesh filename="${mesh_directory}/the_crawer.stl" scale="0.001 0.001 0.001"/>-->
+          <box size = "0.057 0.031 0.042"/>
+        </geometry>
+      <origin rpy="0 0 0" xyz="0.02 0 0.01"/>
+    </collision>
+    
+    <inertial>
+      <mass value="0.1"/>
+      <inertia ixx="6.90013881e-05" ixy="0.0" ixz="0.0" iyy="1.24554875e-04" iyz="0.0" izz="1.04295793e-04"/>
+    </inertial>
+  </link>
+  
+
+
+  <!-- Joint prismatico per la pinza destra -->
+  <joint name="${prefix}gripper_right_joint" type="prismatic">
+    <parent link="${prefix}crawer_base"/>
+    <child link="${prefix}crawer_right"/>
+    <origin xyz="0.03 0.015 0.01" rpy="3.1415 -1.57 0"/>
+    <axis xyz="0 0 1"/>  <!-- Si muove in direzione opposta -->
+    <limit effort="20" velocity="0.1" lower="0.0" upper="0.03"/>  <!-- 3cm di apertura; velocity di default 0.05 -->
+  </joint>
+
+  
+  <link name="${prefix}crawer_right">
+    <visual>
+      <geometry>
+        <mesh filename="${mesh_directory}/the_crawer.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <material name="white">
+        <color rgba="1 1 1 1"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+          <!--<mesh filename="${mesh_directory}/the_crawer.stl" scale="0.001 0.001 0.001"/>-->
+          <box size = "0.057 0.031 0.042"/>
+        </geometry>
+      <origin rpy="0 0 0" xyz="0.02 0 0.01"/>
+    </collision>
+    
+    <inertial>
+      <mass value="0.1"/>
+      <inertia ixx="6.90013881e-05" ixy="0.0" ixz="0.0" iyy="1.24554875e-04" iyz="0.0" izz="1.04295793e-04"/>
+    </inertial>
+  </link>
+
+  <!-- ========== GAZEBO PLUGINS ========== -->
+
+
+  <gazebo>
+    <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+      <parameters>$(arg yaml_file)</parameters>      
+      <ros>
+      <namespace>$(arg namespace)</namespace>      
+      </ros>
+      <control_period>0.01</control_period>  <!-- 100 Hz = 0.01 secondi -->      
+    </plugin>
+  </gazebo>
+
+  <!-- Colori e proprietà fisiche per Gazebo -->
+  <gazebo reference="${prefix}base_link">
+    <material>Gazebo/Red</material>
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+  </gazebo>
+
+  <gazebo reference="${prefix}base_turn">
+    <material>Gazebo/Red</material>
+  </gazebo>
+
+  <gazebo reference="${prefix}base_turn_rot">
+    <material>Gazebo/Red</material>
+  </gazebo>
+
+  <gazebo reference="${prefix}dyn2">
+    <material>Gazebo/Blue</material>
+  </gazebo>
+
+  <gazebo reference="${prefix}dyn3">
+    <material>Gazebo/Blue</material>
+  </gazebo>
+
+  <gazebo reference="${prefix}dyn4">
+    <material>Gazebo/Blue</material>
+  </gazebo>
+
+  <gazebo reference="${prefix}dyn5">
+    <material>Gazebo/Blue</material>
+  </gazebo>
+
+  <gazebo reference="${prefix}f4">
+    <material>Gazebo/Red</material>
+  </gazebo>
+
+  <gazebo reference="${prefix}f5">
+    <material>Gazebo/Red</material>
+  </gazebo>
+
+  <gazebo reference="${prefix}wrist">
+    <material>Gazebo/Red</material>
+  </gazebo>
+
+  <gazebo reference="${prefix}crawer_base">
+    <material>Gazebo/Red</material>
+  </gazebo>
+
+  <gazebo reference="${prefix}crawer_left">
+    <material>Gazebo/White</material>
+  </gazebo>
+
+  <gazebo reference="${prefix}crawer_right">
+    <material>Gazebo/White</material>
+  </gazebo>
+
+  <gazebo reference="${prefix}crawer_left">
+    <material>Gazebo/White</material>
+    <mu1>1.0</mu1>  <!-- ✅ Attrito aumentato -->
+    <mu2>1.0</mu2>
+    <kp>1000000.0</kp>  <!-- ✅ Rigidità contatto -->
+    <kd>1.0</kd>
+  </gazebo>
+
+  <gazebo reference="${prefix}crawer_right">
+    <material>Gazebo/White</material>
+    <mu1>1.0</mu1>
+    <mu2>1.0</mu2>
+    <kp>1000000.0</kp>
+    <kd>1.0</kd>
+  </gazebo>
+
+  <!-- ros2_control hardware interface -->
+  <ros2_control name="GazeboSimSystem" type="system">
+    <hardware>
+      <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+    </hardware>
+    
+    <joint name="${prefix}j0">
+      <command_interface name="position">
+        <param name="min">-2.57</param>
+        <param name="max">2.57</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+    
+    <joint name="${prefix}j1">
+      <command_interface name="position">
+        <param name="min">-3.14</param>
+        <param name="max">3.14</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+    
+    <joint name="${prefix}j2">
+      <command_interface name="position">
+        <param name="min">-3.14</param>
+        <param name="max">3.14</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+    
+    <joint name="${prefix}j3">
+      <command_interface name="position">
+        <param name="min">-3.14</param>
+        <param name="max">3.14</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    
+    <joint name="${prefix}gripper_left_joint">
+      <command_interface name="position">
+        <param name="min">0.0</param>
+        <param name="max">0.03</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <joint name="${prefix}gripper_right_joint">
+      <command_interface name="position">
+        <param name="min">0.0</param>
+        <param name="max">0.03</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+      
+    </joint>
+
+  </ros2_control>
+
+  
+  
+</robot>

@@ -1,0 +1,1262 @@
+<?xml version="1.0" ?>
+<sdf version="1.8">
+  <world name="airport">
+    
+    <!-- Physics -->
+    <physics name="1ms" type="ignored">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
+    
+    <!-- Plugins -->
+    <plugin filename="ignition-gazebo-physics-system" name="ignition::gazebo::systems::Physics">
+    </plugin>
+    <plugin filename="ignition-gazebo-user-commands-system" name="ignition::gazebo::systems::UserCommands">
+    </plugin>
+    <plugin filename="ignition-gazebo-scene-broadcaster-system" name="ignition::gazebo::systems::SceneBroadcaster">
+    </plugin>
+    <plugin filename="ignition-gazebo-contact-system" name="ignition::gazebo::systems::Contact">
+    </plugin>
+
+    <!-- Light -->
+    <light type="directional" name="sun">
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <attenuation>
+        <range>1000</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <direction>-0.5 0.1 -0.9</direction>
+    </light>
+
+    <!-- Ground Plane (Airport Tarmac) -->
+    <model name="ground_plane">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>30 25</size>
+            </plane>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>30 25</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0.3 0.3 0.3 1</ambient>
+            <diffuse>0.4 0.4 0.4 1</diffuse>
+            <specular>0.01 0.01 0.01 1</specular>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- ============================ -->
+    <!-- Airport Fence 30 x 25 meters -->
+    <!-- ============================ -->
+
+    <model name="airport_fence">
+      <static>true</static>
+
+      <!-- NORTH WALL -->
+      <link name="north_wall">
+        <pose>0 12.25 0.5 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>30 0.5 1</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>30 0.5 1</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.8 0.75 0.6 1</ambient>
+            <diffuse>0.8 0.75 0.6 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
+          </material>
+        </visual>
+      </link>
+
+      <!-- SOUTH WALL -->
+      <link name="south_wall">
+        <pose>0 -12.25 0.5 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>30 0.5 1</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>30 0.5 1</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.8 0.75 0.6 1</ambient>
+            <diffuse>0.8 0.75 0.6 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
+          </material>
+        </visual>
+      </link>
+
+      <!-- EAST WALL -->
+      <link name="east_wall">
+        <pose>14.75 0 0.5 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.5 25 1</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.5 25 1</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.8 0.75 0.6 1</ambient>
+            <diffuse>0.8 0.75 0.6 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
+          </material>
+        </visual>
+      </link>
+
+      <!-- WEST WALL -->
+      <link name="west_wall">
+        <pose>-14.75 0 0.5 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.5 25 1</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.5 25 1</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.8 0.75 0.6 1</ambient>
+            <diffuse>0.8 0.75 0.6 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
+          </material>
+        </visual>
+      </link>
+
+    </model>
+
+
+
+    <!-- ============================================ -->
+    <!-- TERMINAL BUILDING (Finestre su tutti i lati)-->
+    <!-- ============================================ -->
+    <model name="terminal_building">
+      <static>true</static>
+      <pose>-10.5 0 0 0 0 0</pose>
+      
+      <!-- Main Building Body (BIANCO) -->
+      <link name="main_body">
+        <pose>-1 0 2 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>4 14 4</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>4 14 4</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.95 0.95 0.95 1</ambient>
+            <diffuse>1.0 1.0 1.0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+      
+      <!-- Roof (BIANCO) -->
+      <link name="roof">
+        <pose>-1 0 4.1 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>4.2 14.2 0.2</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.95 0.95 0.95 1</diffuse>
+          </material>
+        </visual>
+      </link>
+      
+      <!-- Entrance Door (FRONTE - lato Fra2mo) -->
+      <link name="entrance">
+        <pose>1.1 0 1.2 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.2 2.5 2.4</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.15 0.05 1</ambient>
+            <diffuse>0.3 0.2 0.1 1</diffuse>
+          </material>
+        </visual>
+      </link>
+      
+      <!-- ========== LATO FRONTE (verso Fra2mo, X+) ========== -->
+      <!-- Vetrata sinistra piano 1 -->
+      <link name="window_front_1_left">
+        <pose>1.05 -4.5 1.5 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.1 4 2.5</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.4 0.6 0.85 0.5</ambient>
+            <diffuse>0.5 0.7 0.9 0.6</diffuse>
+          </material>
+        </visual>
+      </link>
+      
+      <!-- Vetrata destra piano 1 -->
+      <link name="window_front_1_right">
+        <pose>1.05 4.5 1.5 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.1 4 2.5</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.4 0.6 0.85 0.5</ambient>
+            <diffuse>0.5 0.7 0.9 0.6</diffuse>
+          </material>
+        </visual>
+      </link>
+      
+      <!-- Vetrata sinistra piano 2 -->
+      <link name="window_front_2_left">
+        <pose>1.05 -4.5 3.2 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.1 4 1.3</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.4 0.6 0.85 0.5</ambient>
+            <diffuse>0.5 0.7 0.9 0.6</diffuse>
+          </material>
+        </visual>
+      </link>
+
+      <!-- Vetrata sinistra piano 2 -->
+      <link name="window_front_2_central">
+        <pose>1.05 -0.0 3.2 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.1 4 1.3</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.4 0.6 0.85 0.5</ambient>
+            <diffuse>0.5 0.7 0.9 0.6</diffuse>
+          </material>
+        </visual>
+      </link>
+      
+      <!-- Vetrata destra piano 2 -->
+      <link name="window_front_2_right">
+        <pose>1.05 4.5 3.2 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.1 4 1.3</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.4 0.6 0.85 0.5</ambient>
+            <diffuse>0.5 0.7 0.9 0.6</diffuse>
+          </material>
+        </visual>
+      </link>
+      
+      <!-- ========== LATO RETRO (opposto a Fra2mo, X-) ========== -->
+      <!-- Vetrata sinistra piano 1 -->
+      <link name="window_back_1_left">
+        <pose>-3.05 -4.5 1.5 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.1 4 2.5</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.4 0.6 0.85 0.5</ambient>
+            <diffuse>0.5 0.7 0.9 0.6</diffuse>
+          </material>
+        </visual>
+      </link>
+
+      <!-- Vetrata centrale piano 1 -->
+      <link name="window_back_1_central">
+        <pose>-3.05 -0.0 1.5 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.1 4 2.5</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.4 0.6 0.85 0.5</ambient>
+            <diffuse>0.5 0.7 0.9 0.6</diffuse>
+          </material>
+        </visual>
+      </link>
+      
+      <!-- Vetrata destra piano 1 -->
+      <link name="window_back_1_right">
+        <pose>-3.05 4.5 1.5 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.1 4 2.5</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.4 0.6 0.85 0.5</ambient>
+            <diffuse>0.5 0.7 0.9 0.6</diffuse>
+          </material>
+        </visual>
+      </link>
+      
+      <!-- Vetrata sinistra piano 2 -->
+      <link name="window_back_2_left">
+        <pose>-3.05 -4.5 3.2 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.1 4 1.3</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.4 0.6 0.85 0.5</ambient>
+            <diffuse>0.5 0.7 0.9 0.6</diffuse>
+          </material>
+        </visual>
+      </link>
+
+      <!-- Vetrata sinistra piano 2 -->
+      <link name="window_back_2_central">
+        <pose>-3.05 -0.0 3.2 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.1 4 1.3</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.4 0.6 0.85 0.5</ambient>
+            <diffuse>0.5 0.7 0.9 0.6</diffuse>
+          </material>
+        </visual>
+      </link>
+      
+      <!-- Vetrata destra piano 2 -->
+      <link name="window_back_2_right">
+        <pose>-3.05 4.5 3.2 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.1 4 1.3</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.4 0.6 0.85 0.5</ambient>
+            <diffuse>0.5 0.7 0.9 0.6</diffuse>
+          </material>
+        </visual>
+      </link>
+      
+      <!-- ========== LATO SINISTRO (Y-) ========== -->
+      <!-- Vetrata piano 1 -->
+      <link name="window_left_1">
+        <pose>-1 -7.05 1.5 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>3.5 0.1 2.5</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.4 0.6 0.85 0.5</ambient>
+            <diffuse>0.5 0.7 0.9 0.6</diffuse>
+          </material>
+        </visual>
+      </link>
+      
+      <!-- Vetrata piano 2 -->
+      <link name="window_left_2">
+        <pose>-1 -7.05 3.2 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>3.5 0.1 1.3</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.4 0.6 0.85 0.5</ambient>
+            <diffuse>0.5 0.7 0.9 0.6</diffuse>
+          </material>
+        </visual>
+      </link>
+      
+      <!-- ========== LATO DESTRO (Y+) ========== -->
+      <!-- Vetrata piano 1 -->
+      <link name="window_right_1">
+        <pose>-1 7.05 1.5 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>3.5 0.1 2.5</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.4 0.6 0.85 0.5</ambient>
+            <diffuse>0.5 0.7 0.9 0.6</diffuse>
+          </material>
+        </visual>
+      </link>
+      
+      <!-- Vetrata piano 2 -->
+      <link name="window_right_2">
+        <pose>-1 7.05 3.2 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>3.5 0.1 1.3</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.4 0.6 0.85 0.5</ambient>
+            <diffuse>0.5 0.7 0.9 0.6</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    
+
+    <!-- ============================================ -->
+    <!-- ARUCO MARKERS                   -->
+    <!-- ============================================ -->
+    <include>
+      <uri>model://aruco_tag_1</uri>
+      <name>aruco_tag_1</name>
+      <pose>-2.8 -6.5 0.2 1.5708 0 -1.5708</pose>
+      <static>true</static>
+    </include>
+
+    <include>
+      <uri>model://aruco_tag_2</uri>
+      <name>aruco_tag_2</name>
+      <pose>-2.8 6.5 0.2 1.5708 0 -1.5708</pose>
+      <static>true</static>
+    </include>
+
+    <include>
+      <uri>model://aruco_tag_3</uri>
+      <name>aruco_tag_3</name>
+      <pose>3.2 -6.5 0.2 1.5708 0 -1.5708</pose>
+      <static>true</static>
+    </include>
+
+    <include>
+      <uri>model://aruco_tag_4</uri>
+      <name>aruco_tag_4</name>
+      <pose>3.2 6.5 0.2 1.5708 0 -1.5708</pose>
+      <static>true</static>
+    </include>
+
+    <include>
+      <uri>model://aruco_tag_5</uri>
+      <name>aruco_tag_5</name>
+      <pose>9.2 -6.5 0.2 1.5708 0 -1.5708</pose>
+      <static>true</static>
+    </include>
+
+    <include>
+      <uri>model://aruco_tag_6</uri>
+      <name>aruco_tag_6</name>
+      <pose>9.2 6.5 0.2 1.5708 0 -1.5708</pose>
+      <static>true</static>
+    </include>
+
+    <!-- ============================================ -->
+    <!-- REALISTIC AIRPLANES  -->
+    <!-- ============================================ -->
+    
+    <!-- Aereo 1 (Blu) -->
+    <model name="aereo_1">
+      <static>true</static>
+      <pose>-2 -6 0.4 0 0 0</pose>
+      
+      <link name="collision_box">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1.5 3.5 0.8</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+      
+      <link name="fuselage">
+        <pose>0 0 0 1.5708 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.35</radius>
+              <length>2.8</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.85 0.85 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.95 1</diffuse>
+          </material>
+        </visual>
+      </link>
+      
+      <link name="wing_left">
+        <pose>-0.8 0 0 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>1.3 0.1 0.05</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.65 0.65 0.7 1</ambient>
+            <diffuse>0.7 0.7 0.75 1</diffuse>
+          </material>
+        </visual>
+      </link>
+      
+      <link name="wing_right">
+        <pose>0.8 0 0 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>1.3 0.1 0.05</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.65 0.65 0.7 1</ambient>
+            <diffuse>0.7 0.7 0.75 1</diffuse>
+          </material>
+        </visual>
+      </link>
+      
+      <link name="vertical_stabilizer">
+        <pose>0 1.3 0.3 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.05 0.25 0.6</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.2 0.5 0.8 1</ambient>
+            <diffuse>0.3 0.6 0.9 1</diffuse>
+          </material>
+        </visual>
+      </link>
+      
+      <link name="horizontal_stabilizer_left">
+        <pose>-0.3 1.3 0.3 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.6 0.25 0.05</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.65 0.65 0.7 1</ambient>
+            <diffuse>0.7 0.7 0.75 1</diffuse>
+          </material>
+        </visual>
+      </link>
+      
+      <link name="horizontal_stabilizer_right">
+        <pose>0.3 1.3 0.3 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.6 0.25 0.05</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.65 0.65 0.7 1</ambient>
+            <diffuse>0.7 0.7 0.75 1</diffuse>
+          </material>
+        </visual>
+      </link>
+      
+      <link name="cockpit">
+        <pose>0 -1.4 0 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <ellipsoid>
+              <radii>0.35 0.45 0.35</radii>
+            </ellipsoid>
+          </geometry>
+          <material>
+            <ambient>0.1 0.2 0.4 0.8</ambient>
+            <diffuse>0.2 0.3 0.5 0.9</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Aereo 2 (Rosso) -->
+    <model name="aereo_2">
+      <static>true</static>
+      <pose>-2 6 0.4 0 0 0</pose>
+      
+      <link name="collision_box">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1.5 3.5 0.8</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+      
+      <link name="fuselage">
+        <pose>0 0 0 1.5708 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.35</radius>
+              <length>2.8</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.85 0.85 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.95 1</diffuse>
+          </material>
+        </visual>
+      </link>
+      
+      <link name="wing_left">
+        <pose>-0.8 0 0 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>1.3 0.1 0.05</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.65 0.65 0.7 1</ambient>
+            <diffuse>0.7 0.7 0.75 1</diffuse>
+          </material>
+        </visual>
+      </link>
+      
+      <link name="wing_right">
+        <pose>0.8 0 0 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>1.3 0.1 0.05</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.65 0.65 0.7 1</ambient>
+            <diffuse>0.7 0.7 0.75 1</diffuse>
+          </material>
+        </visual>
+      </link>
+      
+      <link name="vertical_stabilizer">
+        <pose>0 1.3 0.3 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.05 0.25 0.6</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.8 0.2 0.2 1</ambient>
+            <diffuse>0.9 0.3 0.3 1</diffuse>
+          </material>
+        </visual>
+      </link>
+      
+      <link name="horizontal_stabilizer_left">
+        <pose>-0.3 1.3 0.3 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.6 0.25 0.05</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.65 0.65 0.7 1</ambient>
+            <diffuse>0.7 0.7 0.75 1</diffuse>
+          </material>
+        </visual>
+      </link>
+      
+      <link name="horizontal_stabilizer_right">
+        <pose>0.3 1.3 0.3 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.6 0.25 0.05</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.65 0.65 0.7 1</ambient>
+            <diffuse>0.7 0.7 0.75 1</diffuse>
+          </material>
+        </visual>
+      </link>
+      
+      <link name="cockpit">
+        <pose>0 -1.4 0 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <ellipsoid>
+              <radii>0.35 0.45 0.35</radii>
+            </ellipsoid>
+          </geometry>
+          <material>
+            <ambient>0.1 0.2 0.4 0.8</ambient>
+            <diffuse>0.2 0.3 0.5 0.9</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Aereo 3 (Giallo) -->
+    <model name="aereo_3">
+      <static>true</static>
+      <pose>4 6 0.4 0 0 0</pose>
+      
+      <link name="collision_box">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1.5 3.5 0.8</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+      
+      <link name="fuselage">
+        <pose>0 0 0 1.5708 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.35</radius>
+              <length>2.8</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.85 0.85 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.95 1</diffuse>
+          </material>
+        </visual>
+      </link>
+      
+      <link name="wing_left">
+        <pose>-0.8 0 0 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>1.3 0.1 0.05</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.65 0.65 0.7 1</ambient>
+            <diffuse>0.7 0.7 0.75 1</diffuse>
+          </material>
+        </visual>
+      </link>
+      
+      <link name="wing_right">
+        <pose>0.8 0 0 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>1.3 0.1 0.05</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.65 0.65 0.7 1</ambient>
+            <diffuse>0.7 0.7 0.75 1</diffuse>
+          </material>
+        </visual>
+      </link>
+      
+      <link name="vertical_stabilizer">
+        <pose>0 1.3 0.3 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.05 0.25 0.6</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.8 0.8 0.2 1</ambient>
+            <diffuse>0.9 0.9 0.3 1</diffuse>
+          </material>
+        </visual>
+      </link>
+      
+      <link name="horizontal_stabilizer_left">
+        <pose>-0.3 1.3 0.3 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.6 0.25 0.05</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.65 0.65 0.7 1</ambient>
+            <diffuse>0.7 0.7 0.75 1</diffuse>
+          </material>
+        </visual>
+      </link>
+      
+      <link name="horizontal_stabilizer_right">
+        <pose>0.3 1.3 0.3 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.6 0.25 0.05</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.65 0.65 0.7 1</ambient>
+            <diffuse>0.7 0.7 0.75 1</diffuse>
+          </material>
+        </visual>
+      </link>
+      
+      <link name="cockpit">
+        <pose>0 -1.4 0 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <ellipsoid>
+              <radii>0.35 0.45 0.35</radii>
+            </ellipsoid>
+          </geometry>
+          <material>
+            <ambient>0.1 0.2 0.4 0.8</ambient>
+            <diffuse>0.2 0.3 0.5 0.9</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Aereo 4 (Verde) -->
+    <model name="aereo_4">
+      <static>true</static>
+      <pose>4 -6 0.4 0 0 0</pose>
+      
+      <link name="collision_box">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1.5 3.5 0.8</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+      
+      <link name="fuselage">
+        <pose>0 0 0 1.5708 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.35</radius>
+              <length>2.8</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.85 0.85 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.95 1</diffuse>
+          </material>
+        </visual>
+      </link>
+      
+      <link name="wing_left">
+        <pose>-0.8 0 0 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>1.3 0.1 0.05</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.65 0.65 0.7 1</ambient>
+            <diffuse>0.7 0.7 0.75 1</diffuse>
+          </material>
+        </visual>
+      </link>
+      
+      <link name="wing_right">
+        <pose>0.8 0 0 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>1.3 0.1 0.05</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.65 0.65 0.7 1</ambient>
+            <diffuse>0.7 0.7 0.75 1</diffuse>
+          </material>
+        </visual>
+      </link>
+      
+      <link name="vertical_stabilizer">
+        <pose>0 1.3 0.3 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.05 0.25 0.6</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.2 0.8 0.2 1</ambient>
+            <diffuse>0.3 0.9 0.3 1</diffuse>
+          </material>
+        </visual>
+      </link>
+      
+      <link name="horizontal_stabilizer_left">
+        <pose>-0.3 1.3 0.3 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.6 0.25 0.05</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.65 0.65 0.7 1</ambient>
+            <diffuse>0.7 0.7 0.75 1</diffuse>
+          </material>
+        </visual>
+      </link>
+      
+      <link name="horizontal_stabilizer_right">
+        <pose>0.3 1.3 0.3 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.6 0.25 0.05</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.65 0.65 0.7 1</ambient>
+            <diffuse>0.7 0.7 0.75 1</diffuse>
+          </material>
+        </visual>
+      </link>
+      
+      <link name="cockpit">
+        <pose>0 -1.4 0 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <ellipsoid>
+              <radii>0.35 0.45 0.35</radii>
+            </ellipsoid>
+          </geometry>
+          <material>
+            <ambient>0.1 0.2 0.4 0.8</ambient>
+            <diffuse>0.2 0.3 0.5 0.9</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Aereo 5 (Magenta) -->
+    <model name="aereo_5">
+      <static>true</static>
+      <pose>10 -6 0.4 0 0 0</pose>
+      
+      <link name="collision_box">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1.5 3.5 0.8</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+      
+      <link name="fuselage">
+        <pose>0 0 0 1.5708 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.35</radius>
+              <length>2.8</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.85 0.85 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.95 1</diffuse>
+          </material>
+        </visual>
+      </link>
+      
+      <link name="wing_left">
+        <pose>-0.8 0 0 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>1.3 0.1 0.05</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.65 0.65 0.7 1</ambient>
+            <diffuse>0.7 0.7 0.75 1</diffuse>
+          </material>
+        </visual>
+      </link>
+      
+      <link name="wing_right">
+        <pose>0.8 0 0 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>1.3 0.1 0.05</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.65 0.65 0.7 1</ambient>
+            <diffuse>0.7 0.7 0.75 1</diffuse>
+          </material>
+        </visual>
+      </link>
+      
+      <link name="vertical_stabilizer">
+        <pose>0 1.3 0.3 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.05 0.25 0.6</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.8 0.2 0.8 1</ambient>
+            <diffuse>0.9 0.3 0.9 1</diffuse>
+          </material>
+        </visual>
+      </link>
+      
+      <link name="horizontal_stabilizer_left">
+        <pose>-0.3 1.3 0.3 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.6 0.25 0.05</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.65 0.65 0.7 1</ambient>
+            <diffuse>0.7 0.7 0.75 1</diffuse>
+          </material>
+        </visual>
+      </link>
+      
+      <link name="horizontal_stabilizer_right">
+        <pose>0.3 1.3 0.3 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.6 0.25 0.05</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.65 0.65 0.7 1</ambient>
+            <diffuse>0.7 0.7 0.75 1</diffuse>
+          </material>
+        </visual>
+      </link>
+      
+      <link name="cockpit">
+        <pose>0 -1.4 0 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <ellipsoid>
+              <radii>0.35 0.45 0.35</radii>
+            </ellipsoid>
+          </geometry>
+          <material>
+            <ambient>0.1 0.2 0.4 0.8</ambient>
+            <diffuse>0.2 0.3 0.5 0.9</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Aereo 6 (Cyan) -->
+    <model name="aereo_6">
+      <static>true</static>
+      <pose>10 6 0.4 0 0 0</pose>
+      
+      <link name="collision_box">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1.5 3.5 0.8</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+      
+      <link name="fuselage">
+        <pose>0 0 0 1.5708 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.35</radius>
+              <length>2.8</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.85 0.85 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.95 1</diffuse>
+          </material>
+        </visual>
+      </link>
+      
+      <link name="wing_left">
+        <pose>-0.8 0 0 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>1.3 0.1 0.05</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.65 0.65 0.7 1</ambient>
+            <diffuse>0.7 0.7 0.75 1</diffuse>
+          </material>
+        </visual>
+      </link>
+      
+      <link name="wing_right">
+        <pose>0.8 0 0 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>1.3 0.1 0.05</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.65 0.65 0.7 1</ambient>
+            <diffuse>0.7 0.7 0.75 1</diffuse>
+          </material>
+        </visual>
+      </link>
+      
+      <link name="vertical_stabilizer">
+        <pose>0 1.3 0.3 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.05 0.25 0.6</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.2 0.8 0.8 1</ambient>
+            <diffuse>0.3 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+      </link>
+      
+      <link name="horizontal_stabilizer_left">
+        <pose>-0.3 1.3 0.3 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.6 0.25 0.05</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.65 0.65 0.7 1</ambient>
+            <diffuse>0.7 0.7 0.75 1</diffuse>
+          </material>
+        </visual>
+      </link>
+      
+      <link name="horizontal_stabilizer_right">
+        <pose>0.3 1.3 0.3 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.6 0.25 0.05</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.65 0.65 0.7 1</ambient>
+            <diffuse>0.7 0.7 0.75 1</diffuse>
+          </material>
+        </visual>
+      </link>
+      
+      <link name="cockpit">
+        <pose>0 -1.4 0 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <ellipsoid>
+              <radii>0.35 0.45 0.35</radii>
+            </ellipsoid>
+          </geometry>
+          <material>
+            <ambient>0.1 0.2 0.4 0.8</ambient>
+            <diffuse>0.2 0.3 0.5 0.9</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+  </world>
+</sdf>
