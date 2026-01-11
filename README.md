@@ -76,7 +76,6 @@ ros2 launch final_project spawn_6_armando.launch.py
 - Sequential spawning of 6 Armando robots (5s intervals)
 - Activates joint and gripper controllers
 
-**Wait ~60 seconds for all robots to spawn completely.**
 
 ---
 
