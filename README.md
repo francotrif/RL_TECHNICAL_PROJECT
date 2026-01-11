@@ -174,39 +174,9 @@ ros2 run ros2_fra2mo aruco_pose_subscriber.py
 
 ---
 
-### Mission Examples
 
-#### Example 1: Station 1 with 3 bags
-```bash
-ros2 launch ros2_fra2mo mission_to_station.launch.py station:=1 num_bags:=3
-```
-**Result:** Fra2mo navigates to station 1, Armando_1 handles 3 bags (~150s total)
 
----
-
-#### Example 2: Station 4 with 2 bags
-```bash
-ros2 launch ros2_fra2mo mission_to_station.launch.py station:=4 num_bags:=2
-```
-**Result:** Fra2mo navigates to station 4, Armando_4 handles 2 bags (~120s total)
-
----
-
-#### Example 3: Sequential missions (no restart needed!)
-```bash
-# Mission 1
-ros2 launch ros2_fra2mo mission_to_station.launch.py station:=1 num_bags:=3
-# Wait for completion...
-
-# Mission 2 (path automatically replanned)
-ros2 launch ros2_fra2mo mission_to_station.launch.py station:=6 num_bags:=5
-# Wait for completion...
-
-# Mission 3
-ros2 launch ros2_fra2mo mission_to_station.launch.py station:=3 num_bags:=2
-```
-
-**Note:** Only Terminal 5 needs to be restarted between missions. All other components remain active!
+**Note:** Only Terminal 3 and 5 need to be restarted between missions. All other components remain active!
 
 ---
 
